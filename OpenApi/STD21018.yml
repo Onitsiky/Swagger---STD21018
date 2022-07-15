@@ -27,6 +27,10 @@ paths:
                   $ref: '#/components/schemas/Student'
         400:
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     post: 
       tags:
         - Students
@@ -49,6 +53,10 @@ paths:
                 $ref: '#/components/schemas/Student'
         400:
           description: Bad request 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     patch:
       tags:
         - Students
@@ -130,6 +138,10 @@ paths:
                 $ref: '#/components/schemas/StudentId'
         400:
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     delete:
       tags:
         - Students
@@ -148,6 +160,10 @@ paths:
           description: Student deleted successfully
         400:
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
  /courses:
     get:
       tags:
@@ -166,6 +182,10 @@ paths:
                   $ref: '#/components/schemas/Course'
         400:
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     post:
       tags:
         - Courses
@@ -188,6 +208,10 @@ paths:
                 $ref: '#/components/schemas/Course'
         400:
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     patch:
       tags:
         - Courses
@@ -243,9 +267,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Badrequest'
+                $ref: '#/components/schemas/Badrequest'
  /courses/{id}:
     get:
       tags:
@@ -269,6 +291,10 @@ paths:
                 $ref: '#/components/schemas/CourseId'
         400:
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     delete:
       tags:
         - Courses
@@ -287,6 +313,10 @@ paths:
           description: Course deleted successfully
         400:
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
 components:
   schemas:
     CreateStudent:
