@@ -69,6 +69,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateStudent'
+        required: true
       responses:
         200:
           description: "The created or updated student"
@@ -98,6 +99,7 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/UpdateStudent'
+        required: true
       responses:
         200:
           description: Student updated/created
@@ -224,6 +226,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateCourse'
+        required: true
       responses:
         200:
           description: "The created or updated course"
@@ -253,6 +256,7 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/UpdateCourse'
+        required: true
       responses:
         200:
           description: Student updated/created
