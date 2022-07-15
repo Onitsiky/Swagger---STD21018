@@ -49,6 +49,64 @@ paths:
                 $ref: '#/components/schemas/Student'
         400:
           description: Bad request 
+    patch:
+      tags:
+        - Students
+      operationId: Update Student
+      summary: Update Student
+      description: Update informations about a student
+      requestBody:
+        description: Student to be Updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStudent'
+      responses:
+        200:
+          description: "The created or updated student"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UpdateStudent'
+        400:
+          description: "Bad request"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Badrequest'
+    put:
+      tags:
+        - Students
+      operationId: UpdateStudent
+      summary: Created new or Update existing student
+      description: Update student when given id, create them otherwise
+      requestBody:
+        description: Student to be updated or created
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UpdateStudent'
+      responses:
+        200:
+          description: Student updated/created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UpdateStudent'
+        400:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badrequest'
  /student/{id}:
     get:
       tags:
@@ -130,6 +188,64 @@ paths:
                 $ref: '#/components/schemas/Course'
         400:
           description: Bad request
+    patch:
+      tags:
+        - Courses
+      operationId: Updatecourse
+      summary: Update course
+      description: Update informations about a course
+      requestBody:
+        description: Course to be Updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCourse'
+      responses:
+        200:
+          description: "The created or updated course"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UpdateCourse'
+        400:
+          description: "Bad request"
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Badrequest'
+    put:
+      tags:
+        - Courses
+      operationId: UpdateStudent
+      summary: Created new or Update existing course
+      description: Update course when given id, create them otherwise
+      requestBody:
+        description: Course to be updated or created
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UpdateCourse'
+      responses:
+        200:
+          description: Student updated/created
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UpdateCourse'
+        400:
+          description: "Bad request"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Badrequest'
  /courses/{id}:
     get:
       tags:
@@ -199,6 +315,17 @@ components:
         id:
           type: integer
           example: 2
+    UpdateStudent:
+      properties:
+        id:
+          type: integer
+          example: 10
+        name:
+          type: string
+          example: "new value"
+        birth_date:
+          type: string
+          format: date
     CreateCourse:
       type: object
       properties:
@@ -228,3 +355,27 @@ components:
         id:
           type: integer
           example: 2
+    UpdateCourse:
+      type: object
+      properties:
+        code: 
+          type: string
+          example: "PROG1"
+        name:
+          type: string
+          example: "Algorithmique"
+        Teacher: 
+          type: string
+          example: "Rabe"
+        Created_Date:
+          type: string
+          format: date
+      
+    Badrequest:
+      properties:
+        type: 
+          type: string
+          example: "BadRequestException"
+        message:
+          type: string
+          example: "Bad request"
