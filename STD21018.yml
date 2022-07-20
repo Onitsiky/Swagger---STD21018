@@ -62,13 +62,45 @@ paths:
         - Students
       operationId: Update Student
       summary: Update Student
-      description: Update informations about a student
+      description: |
+        Possible updates on :
+        * name: change
+        * address: change
+        * birth_date: change
+        * phone number: change 
       requestBody:
         description: Student to be Updated
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/UpdateStudent'
+            examples:
+              changeName:
+                summary: Change name
+                description: How to change student's name and what it does
+                value: 
+                  id: 10
+                  name: string
+              changeAddress:
+                summary: Change address
+                description: How to change student's address and what it does
+                value: 
+                  id: 10
+                  address: string
+              changeBirthdate:
+                summary: Change birthday 
+                description: How to change student's birthday and what it does
+                value:
+                  id: 10
+                  birth_date: string
+              addPhoneNumber:
+                summary: add phone number
+                description: Add phone number(s)
+                value:
+                  id: 10
+                  PhoneNumber:
+                  - country_code: "+261"
+                    phoneNumber: "0324224523"
         required: true
       responses:
         200:
@@ -78,7 +110,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UpdateStudent'
+                  $ref: '#/components/schemas/Student'
         400:
           description: "Bad request"
           content:
@@ -323,6 +355,15 @@ paths:
                 $ref: '#/components/schemas/Badrequest'
 components:
   schemas:
+    PhoneNumber:
+      type: object
+      properties:
+        country_code: 
+          type: string
+          example: "261"
+        number:
+          type: string   
+          example: "0322154212"
     CreateStudent:
       type: object
       properties:
@@ -333,6 +374,9 @@ components:
           type: string
           format: date
           example: "2022-01-01"
+        address:
+          type: string
+          example: "Ivandry"
     Student:
       allOf:
         - $ref: '#/components/schemas/CreateStudent'
@@ -341,6 +385,10 @@ components:
         id:
           type: integer
           example: 10
+        PhoneNumber:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
     StudentId:
       allOf:
         - $ref: '#/components/schemas/CreateStudent'
