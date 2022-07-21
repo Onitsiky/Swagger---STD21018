@@ -1,0 +1,232 @@
+openapi: 3.0.1
+info:
+  title: Cinéma STD21018
+  description: 'API de gestion d''une salle de cinéma'
+  version: 1.0.0
+servers:
+  - url: https://cinema.STD21018.com
+tags:
+  - name: Films
+paths:
+  /Films:
+    get:
+      tags:
+        - Films
+      summary: This week's films
+      description: List of this week's films
+      operationId: listFilms
+      responses:
+        200:
+          description: films to be played this week 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 $ref: 
+                  '#/components/schemas/projection'
+        400:
+          description: Badrequest
+    post:
+      tags:
+        - Films
+      summary: Add a new film 
+      description: Add a film to the week's playlist films
+      operationId: addFilm
+      requestBody:
+        description: details about the film
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/createFilm'
+        required: true
+      responses:
+        200:
+          description: Film added to the queue
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/projection'
+    put:
+      tags:
+        - Films
+      summary: Change film
+      description: Change a film
+      operationId: putFilm
+      requestBody:
+        description: The new films
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/createFilm'
+      responses:
+        200:
+          description: Film(s) updated
+        400:
+          description: Badrequest
+    delete:
+      tags:
+        - Films
+      summary: delete film(s)
+      description: delete film(s) from the list
+      operationId: deletefilm
+      requestBody:
+        description: film(s) to be deleted
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/deleteFilm'
+      responses:
+        200:
+          description: film(s) deleted
+        400:
+          description: BadRequest
+  /films/{id}:
+    get:
+      tags:
+        - Films
+      summary: Get informations of a film
+      description: Get informations about a specific film
+      operationId: Getfilm
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+            example: 2
+          required: true
+      responses:
+        200:
+          description: Informations about the film with the entered id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/projection'
+        400:
+          description: BadRequest
+    patch:
+      tags:
+        - Films
+      summary: Changes details of a film
+      description: |
+            Possible change on 
+            * titre
+            * résumé
+            * réalisateur
+            * jour_de_projection
+            * salle
+      requestBody:
+        description: film to be updated
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/createFilm'
+            examples:
+              changeTitle:
+                summary: change the title
+                description: How to change title and what it does
+                value: 
+                  title: "Rampage"
+              changeResume: 
+                summary: change the description
+                description: How to change title and what it does
+                value:
+                  résumé: string
+              changemanager:
+                summary: change the manager
+                description: How to change title and what it does
+                value:
+                  résumé : "miala tsiny indrindra zanako ato"
+              changeDay:
+                summary: change time
+                description: How to change title and what it does 
+                value:
+                  jour_de_projection: string
+              changeRoom:
+                summary: change the cinema changeRoom
+                description: How to change title and what it does
+                value: 
+                  salle: string   
+      responses:
+        200:
+          description: film updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/projection'
+    delete:
+      tags:
+        - Films
+      summary: delete a film
+      description: Delete a specific delete
+      operationId: deleteFilm
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+            example: 21
+          required: true
+      responses:
+        200:
+          description: film deleted
+        400:
+          description: BadRequest
+
+components:
+  schemas:
+    createFilm:
+      description: film
+      type: object
+      properties:
+        titre:
+          type: string
+          example: Red notice
+        durée:
+          type: string
+          format: time
+          example: "02:21:45"
+        résumé:
+          type: string
+          example: Dans la jungle aussi profonde que la mer, ...
+        realisateur:
+          type: string
+          example: The Duffer Brothers 
+        date_de_sortie:
+          type: string
+          format: date
+        jour_de_projection:
+          type: string
+          example: "Mercredi"
+    projection: 
+      allOf:
+        - $ref: '#/components/schemas/createFilm'
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 9
+        salle:
+          type: string
+          example: "A"
+    deleteFilm: 
+      description: films to be deleted 
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 13
+    salle:
+      description: salle de cinéma
+      type: object
+      properties:
+        numéro:
+          type: string
+          example: "A"
+        capacité:
+          type: integer
+          example: 400
