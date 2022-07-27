@@ -7,8 +7,9 @@ servers:
   - url: https://cinema.STD21018.com
 tags:
   - name: Films
+  - name : Categories
 paths:
-  /Films:
+  /films:
     get:
       tags:
         - Films
@@ -27,6 +28,10 @@ paths:
                   '#/components/schemas/projection'
         400:
           description: Badrequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     post:
       tags:
         - Films
@@ -47,6 +52,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/projection'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     put:
       tags:
         - Films
@@ -66,6 +77,10 @@ paths:
           description: Film(s) updated
         400:
           description: Badrequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     delete:
       tags:
         - Films
@@ -85,6 +100,10 @@ paths:
           description: film(s) deleted
         400:
           description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
   /films/{id}:
     get:
       tags:
@@ -108,17 +127,29 @@ paths:
                 $ref: '#/components/schemas/projection'
         400:
           description: BadRequest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     patch:
       tags:
         - Films
       summary: Changes details of a film
       description: |
             Possible change on 
-            * titre
-            * résumé
-            * réalisateur
-            * jour_de_projection
-            * salle
+            * title
+            * summarize
+            * type
+            * director
+            * release_date
+            * room
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: integer
+            example: 9
+          required: true
       requestBody:
         description: film to be updated
         content:
@@ -133,24 +164,29 @@ paths:
                   title: "Rampage"
               changeResume: 
                 summary: change the description
-                description: How to change title and what it does
+                description: How to change summary and what it does
                 value:
-                  résumé: string
-              changemanager:
+                  summarize: string
+              changeType:
+                summary: change the film's type
+                description: How to change the type of a film
+                value:
+                  type: Fantasy
+              changeDirector:
                 summary: change the manager
-                description: How to change title and what it does
+                description: How to change the manager and what it does
                 value:
-                  résumé : "miala tsiny indrindra zanako ato"
+                  director : "The Duffer brothers"
               changeDay:
                 summary: change time
-                description: How to change title and what it does 
+                description: How to change thr release date and what it does 
                 value:
-                  jour_de_projection: string
+                  release_date: string
               changeRoom:
-                summary: change the cinema changeRoom
-                description: How to change title and what it does
+                summary: change the projection room
+                description: How to change the room and what it does
                 value: 
-                  salle: string   
+                  room: string  
       responses:
         200:
           description: film updated
@@ -158,6 +194,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/projection'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
     delete:
       tags:
         - Films
@@ -176,32 +218,111 @@ paths:
           description: film deleted
         400:
           description: BadRequest
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
+  /categories:
+    get:
+      tags:
+        - Categories
+      summary: Get all film Categories
+      description: Get the list of all film categories
+      responses:
+        200:
+          description: List of all categories
+          content:
+            application/json:
+              schema:  
+                type: array
+                items:
+                  $ref: '#/components/schemas/categories'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
+    post:
+      tags:
+        - Categories
+      summary: Add new category
+      description: Add new films category
+      requestBody:
+        description: Add a new category to the list
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name: 
+                  type: string
+                  example: Commedy
+      responses:
+        200:
+          description: Category added to the list 
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Badrequest'
+  /categories/{name}:
+    get:
+      tags:
+        - Categories
+      summary: Get all films having the entered category
+      description: Return the list of all films having this category
+      parameters:
+        - name: name
+          in: path
+          schema: 
+            type: string
+            example: Thriller
+          required: true
+      responses:
+        200:
+          description: List of all films having this category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/projection'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/Badrequest'
 components:
   schemas:
     createFilm:
       description: film
       type: object
       properties:
-        titre:
+        title:
           type: string
           example: Red notice
-        durée:
+        duration:
           type: string
           format: time
           example: "02:21:45"
-        résumé:
+        summarize:
           type: string
           example: Dans la jungle aussi profonde que la mer, ...
-        realisateur:
+        type:
+          type: string
+          example: Thriller
+        director:
           type: string
           example: The Duffer Brothers 
-        date_de_sortie:
+        release_date:
           type: string
           format: date
-        jour_de_projection:
+        screening_day:
           type: string
-          example: "Mercredi"
+          example: "Sunday"
     projection: 
       allOf:
         - $ref: '#/components/schemas/createFilm'
@@ -210,7 +331,7 @@ components:
         id: 
           type: integer
           example: 9
-        salle:
+        room:
           type: string
           example: "A"
     deleteFilm: 
@@ -220,13 +341,25 @@ components:
         id:
           type: integer
           example: 13
-    salle:
-      description: salle de cinéma
+    room:
+      description: cinemas room 
       type: object
       properties:
-        numéro:
+        id:
           type: string
           example: "A"
-        capacité:
+        capacity:
           type: integer
           example: 400
+    categories:
+      description: film categories
+      type: string
+      example: Thriller
+    Badrequest:
+      properties:
+        type: 
+          type: string
+          example: "BadRequestException"
+        message:
+          type: string
+          example: "Bad request"
