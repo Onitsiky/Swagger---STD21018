@@ -222,28 +222,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Badrequest'
-  /categories/{name}:
-    get:
-      tags:
-        - Categories
-      summary: Get all films having the entered category
-      description: Return the list of all films having this category
-      parameters:
-        - name: name
-          in: path
-          schema: 
-            type: string
-            example: Thriller
-          required: true
-      responses:
-        200:
-          description: List of all films having this category
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/projection'
   /categories:
     get:
       tags:
@@ -289,6 +267,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Badrequest'
+  /categories/{name}:
+    get:
+      tags:
+        - Categories
+      summary: Get all films having the entered category
+      description: Return the list of all films having this category
+      parameters:
+        - name: name
+          in: path
+          schema: 
+            type: string
+            example: Thriller
+          required: true
+      responses:
+        200:
+          description: List of all films having this category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/projection'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref : '#/components/schemas/Badrequest'
 components:
   schemas:
     createFilm:
@@ -347,11 +353,8 @@ components:
           example: 400
     categories:
       description: film categories
-      type: object
-      properties:
-        type:
-          type: string
-          example: Thriller
+      type: string
+      example: Thriller
     Badrequest:
       properties:
         type: 
